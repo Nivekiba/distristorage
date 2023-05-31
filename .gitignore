@@ -1,6 +1,6 @@
 **/sar*
 **/dd*
-ceph/
+ceph-r/
 figs**
 glusterfs/
 **/*.qcow2
