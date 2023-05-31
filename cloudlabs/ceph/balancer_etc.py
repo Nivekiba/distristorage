@@ -86,7 +86,7 @@ def process(latenc):
 
     for i, aff in enumerate(affs):
         # ceph osd primary-affinity osd.<id> 0
-        aff = 1 # fix the affinity to 1, seems aff < 1 crush the system (don't know why)
+        #aff = 1 # fix the affinity to 1, seems aff < 1 crush the system (don't know why)
         cmd = json.dumps({"prefix": "osd primary-affinity", "id":i,  "weight": aff, "format": "json"})
         res = cluster.mon_command(cmd, b'')
         print(res)

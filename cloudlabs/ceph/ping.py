@@ -7,7 +7,7 @@ etcd = etcd3.client("10.10.1.1")
 
 osds=[]
 
-for i in range(1,11):
+for i in range(1,10):
 	osds+=["node"+str(i)]
 
 import time
