@@ -1,0 +1,1 @@
+╰─ for i in {1..10}; do echo $i;tail -6 ceph/data/dd"$i"0 | head -2;done                                             ─╯

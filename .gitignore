@@ -3,3 +3,4 @@
 ceph/
 figs**
 glusterfs/
+**/*.qcow2

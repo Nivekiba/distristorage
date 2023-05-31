@@ -1,0 +1,32 @@
+===> intro
+
+- automatic placement of virtual disks over the storage arrays
+
+- io latency as primary metric for modeling and workload characterization
+
+- output: proposal of optimal migration of data for load balancing
+
+====> workload characterization
+- io sizes, r/w ratio (using vmware esx which allow it in a light-weight and transparent), outgoing i/o requests, percentage of randomness
+- this helps to see which and how io latency varies based on these factors in order to define a notion of "load"
+
+====> load balancing engine
+
+after a periodic time:
+- get the device with maximum load and the one with minimum load
+- recommend data migration between the 2 in order to balance load them
+- avoid ping-pong of data
+- avoid migration violating reliability or data protection policies
+
+- propose these recommended migrations to admin user
+- or automatically perform them at period of low activity 
+
+*initial placement
+- choose disk with minimum value of normalized load for a new virtual disk creation
+
+====> evaluation
+
+3 modules:
+- admin: in charge of colleciton io stats and further apply migrations recommended by the analyser]
+- modeler: create models for both workload and device
+- analyser: take the generated models and generate migration recommendations 
