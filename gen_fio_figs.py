@@ -33,7 +33,7 @@ dirrs=[
     "/home/nivek/Workspace/distristorage/cloudlabs/ceph/ro/data-vary-snap-b/",
     "/home/nivek/Workspace/distristorage/cloudlabs/ceph/ro/data-vary-mul/",
     "/home/nivek/Workspace/distristorage/cloudlabs/ceph/ro/data-vary-mul-b/",
-    "/home/nivek/Workspace/distristorage/cloudlabs/ceph/ro/data-vary/",
+    "/home/nivek/Workspace/distristorage/cloudlabs/ceph/ro/data-vary2/",
 ]
 datas = {}
 for dir in dirrs:
@@ -84,7 +84,7 @@ dts = {}
 for dirr in dirrs:
     filn = dirr.split("/")[-2]
     for i in range(1, 11, 3):
-        with open(dirr+"dd"+str(i)+"0") as fd:
+        with open(dirr+"dd"+str(i)+str(i)) as fd:
             lines = fd.readlines()
             
             jobs = []

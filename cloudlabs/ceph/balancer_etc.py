@@ -74,7 +74,7 @@ def process(latenc):
 
     for i, lat in enumerate(affs):
         if lat == max(affs):
-            affs[i] = 1
+            affs[i] = 1.0
     
     if last == None:
         last = np.std(latencies)

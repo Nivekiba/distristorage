@@ -1,0 +1,23 @@
+#!/usr/bin/expect -f
+
+set qemu_dir [lindex $argv 0]
+set filename [lindex $argv 1]
+
+set timeout -1
+
+spawn qemu-system-x86_64 -smp 4 -nographic --accel kvm -m 4G -drive file=$filename,format=qcow2,l2-cache-size=7M,cache=none
+
+expect "login: "
+send "root\n"
+
+expect "Password: "
+send "a\n"
+
+expect "# "
+send "ls\n"
+
+expect "# "
+send "cd ~/YCSB && ./bin/ycsb run rocksdb -s -P workloads/workloadc -p rocksdb.dir=/root/ycsb-db -p operationcount=1000000 -p measurementtype=timeseries -p timeseries.granularity=2000  && sync\n"
+
+expect "# "
+send "shutdown -h now\n"
