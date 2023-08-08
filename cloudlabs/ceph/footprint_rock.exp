@@ -17,6 +17,9 @@ expect "# "
 send "ls\n"
 
 expect "# "
+send "ls && echo '\[DBOptions\]' > ~/rocks.ini && echo '  use_direct_reads=true' >> ~/rocks.ini && echo '\[CFOptions \"default\"\]' >> ~/rocks.ini && echo '\[CFOptions \"usertable\"\]' >> ~/rocks.ini\n"
+
+expect "# "
 send "cd ~/YCSB && ./bin/ycsb run rocksdb -s -P workloads/workloadc -p rocksdb.dir=/root/ycsb-db -p operationcount=1000000 -p measurementtype=timeseries -p timeseries.granularity=2000  && sync\n"
 
 expect "# "

@@ -1,9 +1,11 @@
 #!/bin/bash
 
-nodes_id=(186 214 201 204 206 222 187 243 228 242 210 229)
+nodes_id=(221 213 234 228 220 214 208 232 205 211 206 239)
 nodes=()
+
+prefix="amd"
 for id in ${nodes_id[@]}; do
-        nodes+=(amd$id.utah.cloudlab.us)
+        nodes+=($prefix$id.utah.cloudlab.us)
 done
 
 rm -rf ./data

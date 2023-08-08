@@ -3,15 +3,17 @@
 echo "./footprint.exp \$1 \$2 \$3" >> exp_dd.sh
 chmod +x exp_dd.sh
 
+prefix="amd"
+
 for i in {0..10}; do
         cp disk/ub-18.04_50G.qcow2 disk/ub_tmp$i.qcow2
 done
 #cp disk/snapshot-50 /tmp/ub_tmp0.qcow2
 
-nodes_id=(186 214 201 204 206 222 187 243 228 242 210 229)
+nodes_id=(221 213 234 228 220 214 208 232 205 211 206 239)
 nodes=()
 for id in ${nodes_id[@]}; do
-        nodes+=(amd$id.utah.cloudlab.us)
+        nodes+=($prefix$id.utah.cloudlab.us)
 done
 
 pid_arr=()

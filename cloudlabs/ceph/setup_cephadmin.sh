@@ -61,9 +61,10 @@ for node in $osd_nodes; do
 	sleep 20
 	ssh root@$host_name "umount /mydata"
 	ssh root@$host_name "lvremove /dev/emulab/node0-bs --yes"
+        ssh root@$host_name "vgremove emulab --yes"
 	ssh root@$host_name "lvremove /dev/emulab/node$i-bs --yes"
 	ssh root@$host_name "vgcreate emulab /dev/sdb"
-	ssh root@$host_name "lvcreate -L 450G -n node0-bs emulab"
+	ssh root@$host_name "lvcreate -L 400G -n node0-bs emulab"
 	ceph orch host add $host_name
 	sleep 20
         echo "osd=>"$host_name
