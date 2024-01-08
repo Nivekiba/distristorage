@@ -11,8 +11,9 @@ done
 #cp disk/snapshot-50 /tmp/ub_tmp0.qcow2
 exit
 
-nodes_id=(203 218 199 204 189 207 182 197 198  192)
-client_nodes=(node11 node0 node10 node11 node0 node10 node11 node0 node10 node11 node0)
+nodes_id=(201 182 129 141 199 148 162 154 203 159 151 160)
+client_nodes=(node11 node0 node10 node11 node0 node10 node11 node0 node10 node11 node0 node10)
+#client_nodes=(node0 node0 node0 node0 node0 node0 node0 node0 node0 node0 node0)
 
 nodes=()
 for id in ${nodes_id[@]}; do
@@ -25,7 +26,7 @@ for i in $(seq 1 3 10); do
         let sec="35*$i"
         echo "$i" >> dd_footprint
         #sleep $sec
-        ssh -o StrictHostKeyChecking=no root@${client_nodes[1]} "/users/nivekiba/footprint2.exp useless rbd:images/ub$i.qcow2 6M" > /users/nivekiba/dd$i"0" &
+        ssh -o StrictHostKeyChecking=no root@${client_nodes[0]} "/users/nivekiba/footprint2.exp useless rbd:images/ub0.qcow2 6M" > /users/nivekiba/dd$i"0" &
         pidd=$!
         echo $pidd >> /tmp/order
         pid_arr+=($pidd)

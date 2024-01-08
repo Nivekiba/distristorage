@@ -22,13 +22,15 @@ def process():
 	latencies=[]
 	for osd in osds:
 		laa = ping(target=osd, count=2).rtt_avg_ms
-		latencies+=[laa]
-	#if last == None:
-	#	last = np.std(latencies)
-	#else:
-	#	if abs(last-np.std(latencies)) <0.25:
-	#		return
-	#	last = np.std(latencies)
+		latencies+=[int(laa)]
+	if last == None:
+		#last = np.std(latencies)
+		last = latencies
+	else:
+		#if abs(last-np.std(latencies)) <0.25:
+		if last == latencies:
+			return
+		last = latencies
 	etcd.put(socket.gethostname().split(".")[0], str(latencies))
 
 while True:

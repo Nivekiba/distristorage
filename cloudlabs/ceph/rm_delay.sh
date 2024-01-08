@@ -1,1 +1,1 @@
-tc qdisc del dev ens1f0 root
+tc qdisc del dev ens1f0np0 root

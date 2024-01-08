@@ -14,7 +14,7 @@ for node in ${etc_nodes[@]}; do
 	tmp=`ping -q -W1 -c1 $node | head -n1 | cut -d "(" -f2 | cut -d ")" -f1`
 	echo $tmp
 	HOSTS+=($tmp)
-	ssh $node -o StrictHostKeyChecking=no "sudo pip3 install pythonping numpy etcd3"
+	ssh $node -o StrictHostKeyChecking=no "sudo pip3 install pythonping numpy etcd3 && mkdir /mydata/ceph/build/out"
 	scp -o StrictHostKeyChecking=no /mydata/ceph/build/keyring $node:/mydata/ceph/build/keyring
         scp -o StrictHostKeyChecking=no /mydata/ceph/build/ceph.conf $node:/mydata/ceph/build/ceph.conf
 done
@@ -34,7 +34,7 @@ for i in $(seq 0 $n); do
 done
 
 echo $CLUSTER
-exit
+#exit
 
 for i in $(seq 0 $n); do
 	THIS_NAME=${NAMES[$i]}

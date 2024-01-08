@@ -1,23 +1,27 @@
 #!/bin/bash
 
-update-alternatives --set iptables /usr/sbin/iptables-legacy
-update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
+sudo update-alternatives --set iptables /usr/sbin/iptables-legacy
+sudo update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
 
-rm /etc/apt/sources.list.d/* -rf
+sudo rm /etc/apt/sources.list.d/* -rf
 
 ## ====== start kernel upgrade ======= ##
+if false; then
+	sleep 5
 
-#sleep 5
-
-#sudo apt-get update -y
-#wget https://raw.githubusercontent.com/pimlie/ubuntu-mainline-kernel.sh/master/ubuntu-mainline-kernel.sh
-#sudo install ubuntu-mainline-kernel.sh /usr/local/bin/
-#sudo ubuntu-mainline-kernel.sh -c
-#sudo ubuntu-mainline-kernel.sh -i 5.19.17 --yes
-#sudo apt --fix-broken install -y
-#sudo shutdown -h now
-#sleep 5
-
+	sudo apt-get update -y
+	wget https://raw.githubusercontent.com/pimlie/ubuntu-mainline-kernel.sh/master/ubuntu-mainline-kernel.sh
+	sudo install ubuntu-mainline-kernel.sh /usr/local/bin/
+	#sudo apt install python3.7 python3.7-dev -y
+	sudo ubuntu-mainline-kernel.sh -c
+	sudo ubuntu-mainline-kernel.sh -i 5.19.17 --yes
+	sudo apt --fix-broken install -y
+	sudo apt update -y
+	sudo shutdown -h now
+	sleep 5
+	exit
+fi
+#sudo ln -s /usr/bin/python3.7 /usr/bin/python3 -f
 ## ===== stop kernel upgrade ===== ##
 
 sudo apt-get update -y
@@ -106,7 +110,7 @@ sudo apt -y install libboost-filesystem-dev
 sudo apt install libibverbs-dev -y
 sudo apt install python3-routes python3-rados -y # take care of this line, sometimes python3-rados will install incompatible version compared to standalone built of ceph
 sudo pip3 install prettytable
-sudo pip3 install bcrypt
+sudo pip3 install bcrypt==3.1.7
 
 sudo pip3 install asyncssh
 sudo pip3 install pyjwt
@@ -130,7 +134,7 @@ export PATH=$PATH:/mydata/ceph/build/bin
 
 
 # change docker data directory
-mkdir /mydata/docker
+sudo mkdir /mydata/docker
 sudo systemctl stop docker
 
 sudo mv /var/lib/docker/ /mydata/docker/

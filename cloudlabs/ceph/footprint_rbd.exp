@@ -1,11 +1,16 @@
 #!/usr/bin/expect -f
 
+set chan [open /proc/sys/vm/drop_caches w]
+puts $chan 3
+close $chan
+
+
 set qemu_dir [lindex $argv 0]
 set filename [lindex $argv 1]
 
 set timeout -1
 
-spawn $qemu_dir/x86_64-softmmu/qemu-system-x86_64 -smp 4 -nographic --accel kvm -m 4G -drive file=$filename:conf=/mydata/ceph/build/ceph.conf:rbd_read_from_replica_policy=balance,format=qcow2,l2-cache-size=7M,cache=none
+spawn qemu-system-x86_64 -smp 4 -nographic --accel kvm -m 4G -drive file=$filename:conf=/mydata/ceph/build/ceph.conf:rbd_read_from_replica_policy=balance,format=qcow2,l2-cache-size=7M,cache=none
 
 expect "login: "
 send "root\n"
