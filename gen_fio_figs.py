@@ -12,7 +12,39 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 from matplotlib.ticker import MaxNLocator
+# import scienceplots
+# plt.style.use(['science', 'ieee'])
 
+without=[11, 10, 7.5, 5.5]
+withs = [11, 11, 10, 7.7]
+with2 = [10, 11, 11.3, 7.3]
+x=np.arange(4)
+
+ax = plt.subplot(111)
+ax.set_xlabel("Number of parallel workloads")
+ax.set_ylabel("Throughput(MiB/s)")
+ax.bar(x-0.2, without, width=0.2, align='center', label="Ceph")
+ax.bar(x, withs, width=0.2, align='center', label="Ceph-UDA (alg 1)")
+ax.bar(x+0.2, with2, width=0.2, align='center', label="Ceph-UDA (alg 2)")
+plt.xticks(range(4), [1, 4, 7, 10])
+ax.legend()
+plt.savefig("figs-throughput/summary")
+
+without_rocks1 = [1800, 1300, 895, 632]
+without_rocks2 = [1460, 1470, 909, 676]
+with_rocks1 = [1760, 1340, 972, 750]
+with_rocks2 = [1680, 1341, 1021, 808]
+plt.close()
+
+ax = plt.subplot(111)
+ax.set_xlabel("Number of parallel workloads")
+ax.set_ylabel("Throughput(Op/s)")
+ax.bar(x-0.2, without_rocks1, width=0.2, align='center', label="Ceph")
+ax.bar(x, with_rocks1, width=0.2, align='center', label="Ceph-UDA (alg 1)")
+ax.bar(x+0.2, with_rocks2, width=0.2, align='center', label="Ceph-UDA (alg 2)")
+plt.xticks(range(4), [1, 4, 7, 10])
+ax.legend()
+plt.savefig("figs-throughput/summary-ceph")
 
 dirrs=[
     "/home/nivek/Workspace/distristorage/cloudlabs/ro/data-gluster-fio/",
@@ -34,6 +66,15 @@ dirrs=[
     "/home/nivek/Workspace/distristorage/cloudlabs/ceph/ro/data-vary-mul/",
     "/home/nivek/Workspace/distristorage/cloudlabs/ceph/ro/data-vary-mul-b/",
     "/home/nivek/Workspace/distristorage/cloudlabs/ceph/ro/data-vary2/",
+
+    "/home/nivek/Workspace/distristorage/cloudlabs/ceph/data-balance/",
+    "/home/nivek/Workspace/distristorage/cloudlabs/ceph/data-balance-bal/",
+    "/home/nivek/Workspace/distristorage/cloudlabs/ceph/data-tmp/",
+    "/home/nivek/Workspace/distristorage/cloudlabs/ceph/data-tmp2/",
+    "/home/nivek/Workspace/distristorage/cloudlabs/ceph/data-nobal/",
+    "/home/nivek/Workspace/distristorage/cloudlabs/ceph/data-bal/",
+
+    "/home/nivek/Workspace/distristorage/cloudlabs/ceph/data-tmp-algo2/",
 ]
 datas = {}
 for dir in dirrs:
@@ -108,7 +149,7 @@ for dirr in dirrs:
             ax.set_xlabel("time(s)")
             
             plt.yticks(np.arange(0, max(jobs)+1, 1000))
-            ax.set_ylabel("throughput(KiB/s")
+            ax.set_ylabel("throughput(KiB/s)")
             add = ""
             if "snap" in dirr: add = " - with snapshots"
 
@@ -158,17 +199,54 @@ plt.savefig("figs-throughput/global_gluster", bbox_inches="tight")
 
 for i in range(1, 11, 3):
     fig, ax = plt.subplots()
-    ax.plot(dts["data-vary-mul-"+str(i)], label="without balancer")
-    ax.plot(dts["data-vary-mul-b-"+str(i)], label="with balancer")
-    ax.set_title("Evolution of throughput during workload("+str(i)+" workloads)")
+    nobal_prefix = "data-vary-mul-"
+    bal_prefix = "data-vary-mul-b-"
+    #bal_prefix = "data-tmp2-"
+    #nobal_prefix = "data-tmp-"
+    ax.plot(dts[nobal_prefix+str(i)][::2], label="without balancer")
+    ax.plot(dts[bal_prefix+str(i)][::2], label="with balancer")
+    ax.set_title("Evolution of throughput during workload("+str(11-i)+" workloads)")
     ax.set_xlabel("time(s)")
     ax.legend()
 
     plt.yticks(np.arange(0, max(dts["data-vary-mul-"+str(i)])+1, 1000))
-    ax.set_ylabel("throughput(KiB/s")
+    ax.set_ylabel("Throughput(KiB/s)")
 
     plt.savefig("figs-throughput/during_data-vary-mul_and_b-"+str(10-i+1))
-    print(i, sum(dts["data-vary-mul-"+str(i)][500:700])/200)
-    print(i, sum(dts["data-vary-mul-b-"+str(i)][500:700])/200)
+    print(i, sum(dts[nobal_prefix+str(i)][500:700])/200)
+    print(i, sum(dts[bal_prefix+str(i)][500:700])/200)
     plt.close(fig)
+    #plt.show()
+
+# previous for loop but in a single figure
+fig, axes = plt.subplots(nrows=4, ncols=1, sharex=True, sharey=True, figsize=(5, 8))
+j=-1
+for i in range(1, 11, 3):
+    j+=1
+    nobal_prefix = "data-vary-mul-"
+    bal_prefix = "data-vary-mul-b-"
+    #bal_prefix = "data-tmp2-"
+    #nobal_prefix = "data-tmp-"
+    axes[j].plot(dts[nobal_prefix+str(i)][::2], label="without balancer")
+    axes[j].plot(dts[bal_prefix+str(i)][::2], label="balancer (algo 1)")
+
+    axes[j].plot(dts["data-tmp-algo2-"+str(11-i)], label="balancer (algo 2)")
+
+    axes[j].set_title(str(11-i)+" workload(s)")
+    axes[j].get_yaxis().set_major_formatter(
+    ticker.FuncFormatter(lambda x, p: str(int(x)/1000) ))
+    
+    #axes[j].legend()
+
+    plt.yticks(np.arange(0, max(dts[nobal_prefix+str(i)])+1, 2000))
+
+fig.supxlabel("Time(s)")
+fig.supylabel("Throughput(MiB/s)")
+import matplotlib as mpl
+#fig.text(0.5, 0.04, '', va='center', ha='center', fontsize=mpl.rcParams['axes.labelsize'])
+#fig.text(0.04, 0.5, 'Throuput(MB/s)', va='center', ha='center', rotation='vertical', fontsize=mpl.rcParams['axes.labelsize'])
+plt.legend()
+fig.tight_layout()
+plt.savefig("figs-throughput/during_data-vary-mul_and_b_summary")
+plt.close(fig)
     #plt.show()
