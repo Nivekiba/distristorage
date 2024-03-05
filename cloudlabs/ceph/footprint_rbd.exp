@@ -25,7 +25,32 @@ expect "# "
 send "echo 3 > /proc/sys/vm/drop_caches\n"
 
 expect "# "
-send "date;dd if=/dev/sda of=/dev/null bs=1M iflag=direct;date\n"
+send "fio --filename=/dev/sda --direct=1 --percentage_random=70  --rw=randrw --rwmixread=100 --randrepeat=1 --ioengine=libaio --bs=4k --iodepth=32 --numjobs=1 --size=30G --name=randread.4k.out --runtime=400\n"
+
+#expect "# "
+#send "dpkg --configure -a && apt --fix-broken install -y && apt-get update -y && apt-get install maven git -y\n"
+
+#expect "# "
+#send "rm -rf -- ~/ycsb-db || echo Deletion DB\n"
+
+#expect "# "
+#send "rm -rf -- ~/YCSB && git clone https://github.com/brianfrankcooper/YCSB.git && cd ~/YCSB && mvn -pl site.ycsb:rocksdb-binding -am clean package\n"
+
+#expect "# "
+#send "cd ~/YCSB && ./bin/ycsb load rocksdb -s -P workloads/workloada -p workload_dir=/root/ycsb-db -p rocksdb.dir=/root/ycsb-db -p recordcount=300000 -p threadcount=15 -p fieldcount=100 -p fieldlength=100 -p measurementtype=timeseries -p timeseries.granularity=2000 && sync && sleep 10\n"
+
+#expect "# "
+#send "echo 3 > /proc/sys/vm/drop_caches\n"
+
+#set chan [open /proc/sys/vm/drop_caches w]
+#puts $chan 3
+#close $chan
+
+#expect "# "
+#send "ls && echo '\[DBOptions\]' > /root/rocks.ini && echo '  use_direct_reads=true' >> /root/rocks.ini && echo '\[CFOptions \"default\"\]' >> /root/rocks.ini && echo '\[CFOptions \"usertable\"\]' >> /root/rocks.ini\n"
+
+#expect "# "
+#send "cd ~/YCSB && ./bin/ycsb run rocksdb -s -P workloads/workloadc -p rocksdb.optionsfile=/root/rocks.ini -p rocksdb.dir=/root/ycsb-db -p operationcount=300000 -p measurementtype=timeseries -p timeseries.granularity=2000\n"
 
 expect "# "
 send "shutdown -h now\n"

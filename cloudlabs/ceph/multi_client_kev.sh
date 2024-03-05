@@ -9,10 +9,10 @@ for i in {0..10}; do
 	rbd -c /mydata/ceph/build/ceph.conf import /mydata/qcow2-snapshots/expes/disk/ub-18.04_50G.qcow2 images/ub$i.qcow2
 done
 #cp disk/snapshot-50 /tmp/ub_tmp0.qcow2
-exit
+#exit
 
-nodes_id=(201 182 129 141 199 148 162 154 203 159 151 160)
-client_nodes=(node11 node0 node10 node11 node0 node10 node11 node0 node10 node11 node0 node10)
+nodes_id=(141 156 231 168 210 228 151 163 154 126 135 227)
+client_nodes=(node11 node10 node10 node11 node11 node10 node11 node10 node10 node11 node11 node10)
 #client_nodes=(node0 node0 node0 node0 node0 node0 node0 node0 node0 node0 node0)
 
 nodes=()
@@ -48,7 +48,16 @@ for i in $(seq 1 3 10); do
                         "echo 'sar -n DEV -u -db 1 400 > /users/nivekiba/sar_res_$node-$i' > sar.sh && chmod +x ./sar.sh && nohup ./sar.sh &"
         done
         #ssh -i /root/id_rsa -o StrictHostKeyChecking=no -f root@${nodes[1]} "nohup /root/sar.sh &"
-
+	sleep 20
+	ssh node10 /users/nivekiba/add_delay.sh 10.10.1.3
+	ssh node11 /users/nivekiba/add_delay.sh 10.10.1.4
+	ssh node10 /users/nivekiba/add_delay.sh 10.10.1.5
+	ssh node11 /users/nivekiba/add_delay.sh 10.10.1.6
+	ssh node10 /users/nivekiba/add_delay.sh 10.10.1.7
+	ssh node11 /users/nivekiba/add_delay.sh 10.10.1.8
+	sleep 300
+	ssh node10 /users/nivekiba/rm_delay.sh
+	ssh node11 /users/nivekiba/rm_delay.sh
         #sleep $sec
         #./exp_dd.sh /mydata/qcow2-snapshots/qemu-4.2-vanilla/build /tmp/ub_tmp0.qcow2 6M > dd$i &
         #main=$!

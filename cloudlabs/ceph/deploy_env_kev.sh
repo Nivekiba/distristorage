@@ -1,6 +1,6 @@
 #!/bin/bash
 
-nodes=(201 182 129 141 199 148 162 154 203 159 151 160)
+nodes=(141 156 231 168 210 228 151 163 154 126 135 227)
 admin=${nodes[0]}
 nodes=${nodes[*]}
 
@@ -47,4 +47,4 @@ scp -o StrictHostKeyChecking=no ./add_latence.sh nivekiba@$prefix$admin.utah.clo
 scp -o StrictHostKeyChecking=no ./rm_latence.sh nivekiba@$prefix$admin.utah.cloudlab.us:
 
 ssh -o StrictHostKeyChecking=no -p 22 \
-	 nivekiba@$prefix$admin.utah.cloudlab.us "#sudo ./etcd_serv_kev.sh node0 node10 node11; sudo ./setup_cephadmin_kev.sh $nodes && sudo ./setup_cephfs.sht $nodes"
+	 nivekiba@$prefix$admin.utah.cloudlab.us "sudo ./setup_cephadmin_kev.sh $nodes && sudo ./setup_cephfs.sht $nodes"

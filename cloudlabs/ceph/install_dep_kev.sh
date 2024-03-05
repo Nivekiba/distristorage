@@ -88,7 +88,7 @@ cd /mydata
 
 sudo rm -rf ceph
 sudo git clone https://github.com/nivekiba/ceph
-#sudo git clone https://github.com/ceph/ceph
+#sudo git clone https://github.com/ljflores/ceph
 sudo git config --global --add safe.directory /mydata/ceph
 
 cd ceph
