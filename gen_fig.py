@@ -12,7 +12,8 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 from matplotlib.ticker import MaxNLocator
 import scienceplots
-plt.style.use(['science', 'ieee'])
+#plt.style.use(['science', 'ieee'])
+mpl.rcParams.update({'font.size': 14})
 
 dirrs=[
     # "/home/nivek/Workspace/distristorage/cloudlabs/data-gluster-rocks-read-5/",
@@ -137,7 +138,8 @@ for dirr, remove_time, disk_int in zip(dirrs, remove_times, disk_interfaces):
                 for i in range(len(t)):
                     if t[i] > 0.5: tmp += [t[i]]
                 #l = ax.plot(t, label=lab+" "+str(np.mean(tmp))[:4])
-                l = ax.plot(t, label="node"+str(j)+" "+str(np.mean(tmp))[:4]+"%")
+                add_percentage = str(np.mean(tmp))[:4]+"%" if not np.isnan(np.mean(tmp)) else ""
+                l = ax.plot(t, label="node"+str(j)+" "+add_percentage)
                 if not(np.isnan(np.mean(tmp))):
                     tmps+=[np.mean(tmp)]
                 print(lab, np.mean(tmp))
